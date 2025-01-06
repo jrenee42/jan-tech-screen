@@ -26,7 +26,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     return (
         <div className={styles.table}>
             {/* Header */}
-            <div className={styles.row}>
+            <div className={styles.headerRow}>
                 <div className={checkClass}>&nbsp;</div>
                 <div className={nameClass}>Name</div>
                 <div className={deviceClass}>Device</div>
