@@ -1,0 +1,12 @@
+.inputText {
+  margin-left: 15px;
+  width: 95%;
+  min-height: 12em; // 1em is roughly one line of text
+  padding: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: vertical; // Allow resizing vertically
+
+}

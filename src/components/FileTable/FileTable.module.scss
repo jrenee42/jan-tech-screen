@@ -1,0 +1,45 @@
+.table {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.row {
+  display: flex;
+  background-color: #f9f9f9;
+
+  &:nth-child(even) {
+    background-color: #efefef;
+  }
+}
+
+.cell {
+  flex: 1;
+  padding: 10px;
+  text-align: left;
+}
+
+.columnCheck {
+  flex: 0 0 10%; /* 10% width */
+}
+
+.columnName {
+  flex: 0 0 15%; /* 15% width */
+}
+
+.columnDevice {
+  flex: 0 0 15%; /* 15% width */
+}
+
+.columnPath {
+  flex: 0 0 45%; /* 45% width */
+}
+
+.columnStatus {
+  flex: 0 0 15%; /* 15% width */
+}
+
+
