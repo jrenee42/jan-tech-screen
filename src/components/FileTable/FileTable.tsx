@@ -2,14 +2,21 @@ import styles from './FileTable.module.scss';
 import {FileInfo} from "@/components/main/Main";
 import Row from "@/components/FileTable/Row";
 import classnames from "classnames";
+import {useState, useEffect} from "react";
 
 type Props = {
     data: FileInfo[];
 };
 
 const FileTable: React.FC<Props> = ({data}) => {
+    
+    const [actualData, setActualData] = useState<FileInfo[]>(data);
 
-    console.log("got odata...", data);
+    // redisplay data when it changes:
+    useEffect(() => {
+        setActualData(data);
+    }, [data]);
+
 
     const checkClass = classnames(styles.cell, styles.columnCheck);
     const nameClass = classnames(styles.cell, styles.columnName);
@@ -29,7 +36,7 @@ const FileTable: React.FC<Props> = ({data}) => {
             </div>
 
             {/* Rows */}
-            {data.map((info) => (
+            {actualData.map((info) => (
                 <Row key={info.device} data={info}/>
             ))}
         </div>
