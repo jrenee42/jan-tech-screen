@@ -11,8 +11,20 @@
   display: flex;
   background-color: #f9f9f9;
 
+  &.selectedRow {
+    background-color: magenta;
+  }
+
+  &:hover {
+    background-color: mediumpurple;
+  }
+
   &:nth-child(even) {
     background-color: #efefef;
+
+    &:hover {
+      background-color: darkturquoise;
+    }
   }
 }
 

@@ -9,14 +9,13 @@ type Props = {
 };
 
 const FileTable: React.FC<Props> = ({data}) => {
-    
+
     const [actualData, setActualData] = useState<FileInfo[]>(data);
 
     // redisplay data when it changes:
     useEffect(() => {
         setActualData(data);
     }, [data]);
-
 
     const checkClass = classnames(styles.cell, styles.columnCheck);
     const nameClass = classnames(styles.cell, styles.columnName);
