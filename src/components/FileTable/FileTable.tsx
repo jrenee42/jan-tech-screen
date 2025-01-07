@@ -9,7 +9,6 @@ import MessageDialog from "@/components/MessageDialog/MessageDialog";
 
 type Props = {
     data: FileInfo[];
-    onSelect: (index: number, isSelected: boolean) => void;
 };
 
 function createFalseArray(n: number): boolean[] {
@@ -22,8 +21,6 @@ const FileTable: React.FC<Props> = ({data}) => {
     const [actualData, setActualData] = useState<FileInfo[]>(data);
     const initSelectedArray = createFalseArray(data.length);
     const [selectedArray, setSelectedArray] = useState<boolean[]>(initSelectedArray);
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
@@ -32,7 +29,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     // redisplay data when it changes:
     useEffect(() => {
         setActualData(data);
-        setSelectedArray(createFalseArray(actualData.length));
+        setSelectedArray(createFalseArray(data.length));
     }, [data]);
 
     const getNumSelected = () => selectedArray.filter(x => x).length;
@@ -73,12 +70,6 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
 
-    const maybeShowDownloadMessage = () => {
-        // todo: only show if something is selected
-        // better todo: show a message saying something has to be selected in order to download anything.
-        openModal();
-    };
-
     return (
         <div>
             <div className={styles.table}>
@@ -86,8 +77,8 @@ const FileTable: React.FC<Props> = ({data}) => {
                 <div className={preHeaderRow}>
                     <div className={checkboxClass}><input type={'checkbox'}/></div>
                     <div className={selectedLabelClass} style={{width: '150px'}}>{selectedText}</div>
-                    <div className={downloadBtnClass} onClick={maybeShowDownloadMessage}><Download size={24}
-                                                                                                   className={styles.icon}/>
+                    <div className={downloadBtnClass} onClick={openModal}>
+                        <Download size={24} className={styles.icon}/>
                         <div>Download Selected</div>
                     </div>
                 </div>

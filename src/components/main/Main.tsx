@@ -28,7 +28,6 @@ const parseJsonData = (text: string) => {
     return JSON.parse(validateJson);
 }
 
-
 const initData = parseJsonData(initText);
 
 const Main: React.FC = () => {
@@ -53,10 +52,7 @@ const Main: React.FC = () => {
             placeholder={'enter data here to display in the table'}
             className={styles.inputText}
         />
-
         <FileTable data={fileInfo}/>
-
-
     </div>;
 
 
