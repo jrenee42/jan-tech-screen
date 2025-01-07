@@ -70,6 +70,8 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
 
+    const headerStatusClass = classnames(styles.cell, styles.columnStatus, styles.headerStatus);
+
     return (
         <div>
             <div className={styles.table}>
@@ -88,7 +90,7 @@ const FileTable: React.FC<Props> = ({data}) => {
                     <div className={nameClass}>Name</div>
                     <div className={deviceClass}>Device</div>
                     <div className={pathClass}>Path</div>
-                    <div className={statusClass}>Status</div>
+                    <div className={headerStatusClass}>Status</div>
                 </div>
 
                 {/* Rows */}
