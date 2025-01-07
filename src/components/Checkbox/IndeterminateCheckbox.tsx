@@ -4,7 +4,7 @@ import styles from "./CheckboxWithTooltip.module.scss";
 type IndeterminateCheckboxProps = {
     checked?: boolean;
     indeterminate?: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: () => void;
     disabled?: boolean;
     tooltip?: string;
 };

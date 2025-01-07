@@ -25,7 +25,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     const initSelectedArray = createFalseArray(data.length);
     const [selectedArray, setSelectedArray] = useState<boolean[]>(initSelectedArray);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [allAreAvailble, setAllAreAvailble] = useState<boolean>(checkAvailability(data));
+    const [allAreAvailable, setAllAreAvailable] = useState<boolean>(checkAvailability(data));
 
     // checkbox in the header:
     const [checked, setChecked] = useState(false);
@@ -39,7 +39,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     useEffect(() => {
         setActualData(data);
         setSelectedArray(createFalseArray(data.length));
-        setAllAreAvailble(checkAvailability(data));
+        setAllAreAvailable(checkAvailability(data));
     }, [data]);
 
     const getNumSelected = () => selectedArray.filter(x => x).length;
@@ -60,32 +60,12 @@ const FileTable: React.FC<Props> = ({data}) => {
     };
 
     // for the header checkbox
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // if all are available; just toggle it (and propagate to the children!)
-        // if all not available:
-        // if indeterminate:  then uncheck everything that is checked (and propogate)
-
-        // if not checked; set to indeterminate and propagate to the available ones!
-
+    const handleCheckboxChange = () => {
         setUserClickedCheckbox(true);
-
-        // when propogating:  add/subtract from the selected array
-        // and set a property on the row to 'selected' (true/false) iff the status is available
-
-        // DONE: also:  make the checkboxes be disabled if status is not available, with a tooltip
-        // that says why it is unavailable
-
-        // also...use justChecked instead??? determine this TODO
 
         let autoSelect = true;
 
-
-        //  what about if none are selectable????
-        // then should do NOTHING
-        // TODO.  then finish this
-        // well, do clean up the code a little (add to the readme, and remove console.log's)
-
-        if (allAreAvailble) {
+        if (allAreAvailable) {
             if (indeterminate) {
                 setChecked(false);
                 setIndeterminate(false);
@@ -113,10 +93,8 @@ const FileTable: React.FC<Props> = ({data}) => {
         if (autoSelect) {
             // turn the available ones 'on'
             const newSelectedArray = actualData.map(one => one.status === AVAILABLE_STATUS);
-            console.log("new array???", newSelectedArray);
             setSelectedArray(newSelectedArray);
         } else {
-            console.log("all are off :(");
             // all go off:
             setSelectedArray(initSelectedArray);
         }
