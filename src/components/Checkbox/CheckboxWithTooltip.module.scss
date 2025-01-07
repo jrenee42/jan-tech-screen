@@ -1,26 +1,30 @@
-.checkbox-container {
+.checkboxContainer {
   position: relative;
   display: inline-block;
 
   .checkbox {
     cursor: pointer;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
   }
 
   .tooltip {
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 10px;
     margin-top: 5px;
     padding: 5px 10px;
-    background-color: #333;
+    background-color: #0073e6;
     color: #fff;
-    border-radius: 4px;
-    font-size: 12px;
+    border-radius: 8px;
+    font-size: 15px;
     white-space: nowrap;
     z-index: 10;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Ensures it's not interactable */
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &:hover .tooltip {
+    opacity: 1; /* Show on hover */
+    visibility: visible; /* Make interactable */
   }
 }

@@ -15,7 +15,7 @@ const Checkbox: React.FC<CheckboxWithTooltipProps> = ({
                                                           disabled = false,
                                                       }) => {
     return (
-        <div className="checkbox-container">
+        <div className={styles.checkboxContainer}>
             <input
                 type="checkbox"
                 checked={checked}
