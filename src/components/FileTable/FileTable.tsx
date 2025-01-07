@@ -6,8 +6,6 @@ import {useState, useEffect} from "react";
 import {Download} from 'react-bootstrap-icons';
 import MessageDialog from "@/components/MessageDialog/MessageDialog";
 import IndeterminateCheckbox from "@/components/Checkbox/IndeterminateCheckbox";
-import {usePrevious} from "@/app/usePrevious";
-
 
 type Props = {
     data: FileInfo[];
@@ -66,8 +64,7 @@ const FileTable: React.FC<Props> = ({data}) => {
         // if indeterminate:  then uncheck everything that is checked (and propogate)
 
         // if not checked; set to indeterminate and propagate to the available ones!
-        const justChecked = e.target.checked;
-        console.log("ack ack ack thth", justChecked);
+
         setUserClickedCheckbox(true);
 
         // when propogating:  add/subtract from the selected array
@@ -81,7 +78,11 @@ const FileTable: React.FC<Props> = ({data}) => {
         let autoSelect = true;
 
         if (allAreAvailble) {
-            if (checked) {
+            if (indeterminate) {
+                setChecked(false);
+                setIndeterminate(false);
+                autoSelect = false
+            } else if (checked) {
                 setChecked(false);
                 setIndeterminate(false);
                 autoSelect = false;
