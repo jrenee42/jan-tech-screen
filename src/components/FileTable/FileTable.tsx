@@ -37,6 +37,22 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const getNumSelected = () => selectedArray.filter(x => x).length;
 
+    const getSelectedItemText = () => {
+        const numSelected = getNumSelected();
+        if (numSelected === 0) {
+            return "Please select at least one file to download and try again";
+        }
+
+        const selectedData = actualData.filter((line, index) => selectedArray[index]);
+
+        return selectedData.map((one, index) => (<div className={styles.modalLine} key={index}>
+            <div className={styles.col1}> {one.device}</div>
+            <div className={styles.col2}> {one.path}</div>
+        </div>));
+
+    };
+
+
     const onSelect = (index: number, isSelected: boolean) => {
         // Create a shallow copy of the array
         const newArray = [...selectedArray];
@@ -50,15 +66,17 @@ const FileTable: React.FC<Props> = ({data}) => {
     const deviceClass = classnames(styles.cell, styles.columnDevice);
     const pathClass = classnames(styles.cell, styles.columnPath);
     const statusClass = classnames(styles.cell, styles.columnStatus);
-    const preHeaderClass = classnames(styles.cell, styles.preHeaderCell);
+    const selectedLabelClass = classnames(styles.cell, styles.preHeaderCell);
+    const downloadBtnClass = classnames(styles.cell, styles.preHeaderCell, styles.downloadButton);
     const checkboxClass = classnames(styles.cell, styles.preHeaderCell, styles.checkBoxControl);
     const preHeaderRow = classnames(styles.headerRow, styles.preHeaderRow);
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
 
     const maybeShowDownloadMessage = () => {
-        console.log("licked??");
-        setIsModalOpen(true);
+        // todo: only show if something is selected
+        // better todo: show a message saying something has to be selected in order to download anything.
+        openModal();
     };
 
     return (
@@ -67,9 +85,9 @@ const FileTable: React.FC<Props> = ({data}) => {
                 {/* pre-header */}
                 <div className={preHeaderRow}>
                     <div className={checkboxClass}><input type={'checkbox'}/></div>
-                    <div className={preHeaderClass} style={{width: '150px'}}>{selectedText}</div>
-                    <div className={preHeaderClass} onClick={maybeShowDownloadMessage}><Download size={24}
-                                                                                                 className={styles.icon}/>
+                    <div className={selectedLabelClass} style={{width: '150px'}}>{selectedText}</div>
+                    <div className={downloadBtnClass} onClick={maybeShowDownloadMessage}><Download size={24}
+                                                                                                   className={styles.icon}/>
                         <div>Download Selected</div>
                     </div>
                 </div>
@@ -88,12 +106,12 @@ const FileTable: React.FC<Props> = ({data}) => {
                 ))}
             </div>
             <div>
-                <h1>React TypeScript Modal Example</h1>
-                <button onClick={openModal}>Open Modal</button>
                 <MessageDialog isOpen={isModalOpen} onClose={closeModal}>
-                    <h2>Modal Title</h2>
-                    <p>This is a simple modal window with room for multiple lines of text.</p>
-                    <p>You can customize the content as needed!</p>
+                    <h2>Selected Files To Be Downloaded</h2>
+
+                    <div className={styles.modalTable}>
+                        {getSelectedItemText()}
+                    </div>
                 </MessageDialog>
             </div>
 

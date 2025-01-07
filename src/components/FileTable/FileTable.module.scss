@@ -13,6 +13,7 @@
   color: white;
 
   &.preHeaderRow {
+    padding-top: 6px;
     justify-content: start;
     align-items: flex-start;
     flex-direction: row;
@@ -38,6 +39,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  &.downloadButton {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0080ff;
+      border-radius: 10px;
+      border-color: #004080;
+    }
+  }
 }
 
 .row {
@@ -101,6 +112,27 @@
   &.available {
     background-color: green;
     border-radius: 50%;
+  }
+}
+
+.modalTable {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+
+.modalLine {
+  display: flex;
+  flex-direction: row;
+  justify-items: start;
+  align-items: center;
+
+  .col1 {
+    width: 100px;
+  }
+
+  .col2 {
+    width: 300px;
   }
 }
 

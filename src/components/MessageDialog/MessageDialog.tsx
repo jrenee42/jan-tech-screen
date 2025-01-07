@@ -40,8 +40,9 @@ const styles = {
         padding: '20px',
         borderRadius: '8px',
         position: 'relative' as 'relative',
-        width: '400px',
+        width: '575px',
         maxWidth: '90%',
+        overflow: 'scroll',
     },
     closeButton: {
         position: 'absolute' as 'absolute',
