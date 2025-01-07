@@ -15,7 +15,9 @@ function createFalseArray(n: number): boolean[] {
     return Array(n).fill(false);
 }
 
-const checkAvailability = (dd: FileInfo[]) => dd.every((d: FileInfo) => d.status === AVAILABLE_STATUS);
+const checkAvailability = (dd: FileInfo[]) => dd?.every((d: FileInfo) => d.status === AVAILABLE_STATUS);
+
+const areNoneAvailable = (dd: FileInfo[]) => dd?.every((d: FileInfo) => d.status !== AVAILABLE_STATUS);
 
 const FileTable: React.FC<Props> = ({data}) => {
 
@@ -29,7 +31,6 @@ const FileTable: React.FC<Props> = ({data}) => {
     const [checked, setChecked] = useState(false);
     const [indeterminate, setIndeterminate] = useState(false);
     const [userClickedCheckbox, setUserClickedCheckbox] = useState<boolean>(false);
-    // const prevClickCount = usePrevious(userClickedCheckbox) || 0;
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -58,6 +59,7 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     };
 
+    // for the header checkbox
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // if all are available; just toggle it (and propagate to the children!)
         // if all not available:
@@ -76,6 +78,12 @@ const FileTable: React.FC<Props> = ({data}) => {
         // also...use justChecked instead??? determine this TODO
 
         let autoSelect = true;
+
+
+        //  what about if none are selectable????
+        // then should do NOTHING
+        // TODO.  then finish this
+        // well, do clean up the code a little (add to the readme, and remove console.log's)
 
         if (allAreAvailble) {
             if (indeterminate) {
@@ -147,7 +155,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     const pathClass = classnames(styles.cell, styles.columnPath);
     const selectedLabelClass = classnames(styles.cell, styles.preHeaderCell);
     const downloadBtnClass = classnames(styles.cell, styles.preHeaderCell, styles.downloadButton);
-    const checkboxClass = classnames(styles.cell, styles.preHeaderCell, styles.checkBoxControl);
+    const checkboxClass = classnames(styles.cell, styles.preHeaderCell);
     const preHeaderRow = classnames(styles.headerRow, styles.preHeaderRow);
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
@@ -170,7 +178,9 @@ const FileTable: React.FC<Props> = ({data}) => {
                         <IndeterminateCheckbox
                             checked={checked}
                             indeterminate={indeterminate}
-                            onChange={handleCheckboxChange}/>
+                            onChange={handleCheckboxChange}
+                            disabled={areNoneAvailable(actualData)}
+                            tooltip='There are no available files to be downloaded'/>
                     </div>
                     <div className={selectedLabelClass} style={{width: '150px'}}>{selectedText}</div>
                     <div className={downloadBtnClass} onClick={openModal}>

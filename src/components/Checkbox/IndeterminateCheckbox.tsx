@@ -1,15 +1,20 @@
 import React, {useEffect, useRef} from 'react';
+import styles from "./CheckboxWithTooltip.module.scss";
 
 type IndeterminateCheckboxProps = {
     checked?: boolean;
     indeterminate?: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    disabled?: boolean;
+    tooltip?: string;
 };
 
 const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({
                                                                          checked = false,
                                                                          indeterminate = false,
                                                                          onChange,
+                                                                         disabled = false,
+                                                                         tooltip = 'not enabled',
                                                                      }) => {
     const checkboxRef = useRef<HTMLInputElement>(null);
 
@@ -20,14 +25,16 @@ const IndeterminateCheckbox: React.FC<IndeterminateCheckboxProps> = ({
     }, [indeterminate]);
 
     return (
-        <label>
+        <div className={styles.checkboxContainer}>
             <input
                 type="checkbox"
                 ref={checkboxRef}
                 checked={checked}
                 onChange={onChange}
+                disabled={disabled}
             />
-        </label>
+            {disabled && <div className={styles.tooltip}>{tooltip}</div>}
+        </div>
     );
 };
 
