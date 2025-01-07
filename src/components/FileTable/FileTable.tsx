@@ -1,5 +1,5 @@
 import styles from './FileTable.module.scss';
-import {FileInfo} from "@/components/main/Main";
+import {AVAILABLE_STATUS, FileInfo} from "@/components/main/Main";
 import Row from "@/components/FileTable/Row";
 import classnames from "classnames";
 import {useState, useEffect} from "react";
@@ -16,7 +16,7 @@ function createFalseArray(n: number): boolean[] {
     return Array(n).fill(false);
 }
 
-const checkAvailability = (dd: FileInfo[]) => dd.every((d: FileInfo) => d.status === 'available');
+const checkAvailability = (dd: FileInfo[]) => dd.every((d: FileInfo) => d.status === AVAILABLE_STATUS);
 
 const FileTable: React.FC<Props> = ({data}) => {
 
@@ -28,7 +28,7 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     // checkbox in the header:
     const [checked, setChecked] = useState(false);
-    const [indeterminate, setIndeterminate] = useState(true);
+    const [indeterminate, setIndeterminate] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -64,13 +64,14 @@ const FileTable: React.FC<Props> = ({data}) => {
 
         // if not checked; set to indeterminate and propagate to the available ones!
         const justChecked = e.target.checked;
-        console.log("ack ack ack thth", justChecked);
+        // console.log("ack ack ack thth", justChecked);
 
         // when propogating:  add/subtract from the selected array
         // and set a property on the row to 'selected' (true/false) iff the status is available
 
-        // also:  make the checkboxes be disabled if status is not available, with a tooltip
+        // DONE: also:  make the checkboxes be disabled if status is not available, with a tooltip
         // that says why it is unavailable
+
         // also...use justChecked instead??? determine this TODO
 
         if (allAreAvailble) {
@@ -115,6 +116,9 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const headerStatusClass = classnames(styles.cell, styles.columnStatus, styles.headerStatus);
 
+
+    const autoSelect = checked || indeterminate;
+
     return (
         <div>
             <div className={styles.table}>
@@ -143,7 +147,7 @@ const FileTable: React.FC<Props> = ({data}) => {
 
                 {/* Rows */}
                 {actualData.map((info, index) => (
-                    <Row key={info.device} data={info} onSelect={onSelect} index={index}/>
+                    <Row key={info.device} data={info} onSelect={onSelect} index={index} autoSelect={autoSelect}/>
                 ))}
             </div>
             <div>

@@ -13,6 +13,9 @@ export type FileInfo = {
     status: string;
 };
 
+
+export const AVAILABLE_STATUS = 'available';
+
 function fixJsonString(jsonLikeString: string): string {
     // Replace single quotes with double quotes
     let fixedString = jsonLikeString.replace(/'/g, '"');
