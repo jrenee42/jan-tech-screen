@@ -11,9 +11,26 @@
   display: flex;
   background-color: #005bb5;
   color: white;
+
+  &.preHeaderRow {
+    justify-content: start;
+    align-items: flex-start;
+    flex-direction: row;
+    /* background-color: magenta; */
+
+    & > * {
+      flex: 0 0 auto; /* Prevent stretching: no grow, no shrink, natural size */
+    }
+  }
+}
+
+.preHeaderCell {
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .row {
+  color: darkslateblue;
   display: flex;
   background-color: #f9f9f9;
 
@@ -27,6 +44,10 @@
 
   &:nth-child(even) {
     background-color: #efefef;
+
+    &.selectedRow {
+      background-color: magenta;
+    }
 
     &:hover {
       background-color: darkturquoise;

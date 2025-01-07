@@ -12,6 +12,7 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const [actualData, setActualData] = useState<FileInfo[]>(data);
 
+
     // redisplay data when it changes:
     useEffect(() => {
         setActualData(data);
@@ -22,9 +23,18 @@ const FileTable: React.FC<Props> = ({data}) => {
     const deviceClass = classnames(styles.cell, styles.columnDevice);
     const pathClass = classnames(styles.cell, styles.columnPath);
     const statusClass = classnames(styles.cell, styles.columnStatus);
+    const preHeaderClass = classnames(styles.cell, styles.preHeaderCell);
+
+    const preHeaderRow = classnames(styles.headerRow, styles.preHeaderRow);
 
     return (
         <div className={styles.table}>
+            {/* pre-header */}
+            <div className={preHeaderRow}>
+                <div className={preHeaderClass}><input type={'checkbox'}/></div>
+                <div className={preHeaderClass}>Selected #</div>
+                <div className={preHeaderClass}> Download Selected</div>
+            </div>
             {/* Header */}
             <div className={styles.headerRow}>
                 <div className={checkClass}>&nbsp;</div>
