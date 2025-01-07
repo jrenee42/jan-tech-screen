@@ -4,6 +4,7 @@ import Row from "@/components/FileTable/Row";
 import classnames from "classnames";
 import {useState, useEffect} from "react";
 import {Download} from 'react-bootstrap-icons';
+import MessageDialog from "@/components/MessageDialog/MessageDialog";
 
 
 type Props = {
@@ -22,6 +23,11 @@ const FileTable: React.FC<Props> = ({data}) => {
     const initSelectedArray = createFalseArray(data.length);
     const [selectedArray, setSelectedArray] = useState<boolean[]>(initSelectedArray);
 
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     // redisplay data when it changes:
     useEffect(() => {
@@ -50,29 +56,47 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
 
+    const maybeShowDownloadMessage = () => {
+        console.log("licked??");
+        setIsModalOpen(true);
+    };
+
     return (
-        <div className={styles.table}>
-            {/* pre-header */}
-            <div className={preHeaderRow}>
-                <div className={checkboxClass}><input type={'checkbox'}/></div>
-                <div className={preHeaderClass}>{selectedText}</div>
-                <div className={preHeaderClass}><Download size={24} className={styles.icon}/>
-                    <div>Download Selected</div>
+        <div>
+            <div className={styles.table}>
+                {/* pre-header */}
+                <div className={preHeaderRow}>
+                    <div className={checkboxClass}><input type={'checkbox'}/></div>
+                    <div className={preHeaderClass} style={{width: '150px'}}>{selectedText}</div>
+                    <div className={preHeaderClass} onClick={maybeShowDownloadMessage}><Download size={24}
+                                                                                                 className={styles.icon}/>
+                        <div>Download Selected</div>
+                    </div>
                 </div>
+                {/* Header */}
+                <div className={styles.headerRow}>
+                    <div className={checkClass}>&nbsp;</div>
+                    <div className={nameClass}>Name</div>
+                    <div className={deviceClass}>Device</div>
+                    <div className={pathClass}>Path</div>
+                    <div className={statusClass}>Status</div>
+                </div>
+
+                {/* Rows */}
+                {actualData.map((info, index) => (
+                    <Row key={info.device} data={info} onSelect={onSelect} index={index}/>
+                ))}
             </div>
-            {/* Header */}
-            <div className={styles.headerRow}>
-                <div className={checkClass}>&nbsp;</div>
-                <div className={nameClass}>Name</div>
-                <div className={deviceClass}>Device</div>
-                <div className={pathClass}>Path</div>
-                <div className={statusClass}>Status</div>
+            <div>
+                <h1>React TypeScript Modal Example</h1>
+                <button onClick={openModal}>Open Modal</button>
+                <MessageDialog isOpen={isModalOpen} onClose={closeModal}>
+                    <h2>Modal Title</h2>
+                    <p>This is a simple modal window with room for multiple lines of text.</p>
+                    <p>You can customize the content as needed!</p>
+                </MessageDialog>
             </div>
 
-            {/* Rows */}
-            {actualData.map((info, index) => (
-                <Row key={info.device} data={info} onSelect={onSelect} index={index}/>
-            ))}
         </div>
     );
 };
