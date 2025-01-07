@@ -27,14 +27,13 @@ const Row: React.FC<RowProps> = ({data, onSelect, index, autoSelect}) => {
 
     // when autoSelect changes, if the checkbox is enabled and autoselect is actually there
     // (Ie, not undefined) adjust the checkbox and call onSelect.
-    // with calling onSelect; the parent doesn't have to do anything else when the 'select all' checkbox
-    // is toggled
+    // don't call onSelect; that is meant to be called one by one so calling it multiple times doesn't  work (because of how state is updated)
     useEffect(() => {
         console.log("in use effect; device/autoselect/disabled", data.device, autoSelect, checkBoxDisabled);
         if (!checkBoxDisabled && autoSelect !== undefined) {
             // autoSelect changed; update checkbox:
             setSelected(autoSelect);
-            onSelect(index, autoSelect);
+            // onSelect(index, autoSelect);
         }
     }, [autoSelect]);
 
@@ -48,7 +47,7 @@ const Row: React.FC<RowProps> = ({data, onSelect, index, autoSelect}) => {
     const rowClass = classnames(styles.row, isSelected && styles.selectedRow);
 
 
-    const tooltipText = 'Only Available Files can be Downloaded';
+    const tooltipText = 'Selection Disabled: Only Available Files can be Downloaded';
     const checkboxComp = <Checkbox checked={isSelected}
                                    onChange={handleCheckboxChange}
                                    tooltip={tooltipText}

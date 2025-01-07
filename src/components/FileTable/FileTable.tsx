@@ -74,10 +74,13 @@ const FileTable: React.FC<Props> = ({data}) => {
 
         // also...use justChecked instead??? determine this TODO
 
+        let autoSelect = true;
+
         if (allAreAvailble) {
             if (checked) {
                 setChecked(false);
                 setIndeterminate(false);
+                autoSelect = false;
             } else {
                 setChecked(true);
                 setIndeterminate(false);
@@ -87,11 +90,24 @@ const FileTable: React.FC<Props> = ({data}) => {
                 // uncheck everything
                 setChecked(false);
                 setIndeterminate(false);
+                autoSelect = false;
             } else {
                 setChecked(false);
                 setIndeterminate(true);
             }
         }
+        // now: auto-update all the ones that have available status:
+        if (autoSelect) {
+            // turn the available ones 'on'
+            const newSelectedArray = actualData.map(one => one.status === AVAILABLE_STATUS);
+            console.log("new array???", newSelectedArray);
+            setSelectedArray(newSelectedArray);
+        } else {
+            console.log("all are off :(");
+            // all go off:
+            setSelectedArray(initSelectedArray);
+        }
+
     };
 
 
