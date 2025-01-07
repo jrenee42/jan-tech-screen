@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import styles from './FileTable.module.scss';
 import {FileInfo} from "@/components/main/Main";
 import classnames from "classnames";
+import StatusIndicator from "@/components/FileTable/Status";
 
 type RowProps = {
     data: FileInfo;
@@ -39,7 +40,7 @@ const Row: React.FC<RowProps> = ({data, onSelect, index}) => {
             <div className={nameClass}>{data.name}</div>
             <div className={deviceClass}>{data.device}</div>
             <div className={pathClass}>{data.path}</div>
-            <div className={statusClass}>{data.status}</div>
+            <div className={statusClass}><StatusIndicator status={data.status}/></div>
         </div>
     );
 };

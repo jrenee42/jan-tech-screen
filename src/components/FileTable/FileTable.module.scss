@@ -18,15 +18,26 @@
     flex-direction: row;
     /* background-color: magenta; */
 
+    .icon {
+      margin-right: 8px;
+    }
+
     & > * {
       flex: 0 0 auto; /* Prevent stretching: no grow, no shrink, natural size */
     }
   }
 }
 
+.checkBoxControl {
+  padding-top: 15px !important;
+}
+
 .preHeaderCell {
   font-size: 18px;
   font-weight: 800;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .row {
@@ -81,4 +92,15 @@
   flex: 0 0 15%; /* 15% width */
 }
 
+
+.statusCircle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+
+  &.available {
+    background-color: green;
+    border-radius: 50%;
+  }
+}
 

@@ -3,6 +3,8 @@ import {FileInfo} from "@/components/main/Main";
 import Row from "@/components/FileTable/Row";
 import classnames from "classnames";
 import {useState, useEffect} from "react";
+import {Download} from 'react-bootstrap-icons';
+
 
 type Props = {
     data: FileInfo[];
@@ -43,7 +45,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     const pathClass = classnames(styles.cell, styles.columnPath);
     const statusClass = classnames(styles.cell, styles.columnStatus);
     const preHeaderClass = classnames(styles.cell, styles.preHeaderCell);
-
+    const checkboxClass = classnames(styles.cell, styles.preHeaderCell, styles.checkBoxControl);
     const preHeaderRow = classnames(styles.headerRow, styles.preHeaderRow);
 
     const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
@@ -52,9 +54,11 @@ const FileTable: React.FC<Props> = ({data}) => {
         <div className={styles.table}>
             {/* pre-header */}
             <div className={preHeaderRow}>
-                <div className={preHeaderClass}><input type={'checkbox'}/></div>
+                <div className={checkboxClass}><input type={'checkbox'}/></div>
                 <div className={preHeaderClass}>{selectedText}</div>
-                <div className={preHeaderClass}> Download Selected</div>
+                <div className={preHeaderClass}><Download size={24} className={styles.icon}/>
+                    <div>Download Selected</div>
+                </div>
             </div>
             {/* Header */}
             <div className={styles.headerRow}>
