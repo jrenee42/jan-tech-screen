@@ -1,0 +1,26 @@
+.checkbox-container {
+  position: relative;
+  display: inline-block;
+
+  .checkbox {
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .tooltip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+}

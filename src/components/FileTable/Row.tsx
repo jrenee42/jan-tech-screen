@@ -4,6 +4,7 @@ import styles from './FileTable.module.scss';
 import {FileInfo} from "@/components/main/Main";
 import classnames from "classnames";
 import StatusIndicator from "@/components/FileTable/Status";
+import Checkbox from "@/components/Checkbox/Checkbox";
 
 type RowProps = {
     data: FileInfo;
@@ -30,13 +31,16 @@ const Row: React.FC<RowProps> = ({data, onSelect, index}) => {
 
     const rowClass = classnames(styles.row, isSelected && styles.selectedRow);
 
+    const checkBoxDisabled = data.status !== 'available';
+    const tooltipText = 'Only Available Files can be Downloaded';
+    const checkboxComp = <Checkbox checked={isSelected}
+                                   onChange={handleCheckboxChange}
+                                   tooltip={tooltipText}
+                                   disabled={checkBoxDisabled}/>;
+
     return (
         <div className={rowClass}>
-            <div className={checkClass}><input type={'checkbox'}
-                                               checked={isSelected}
-                                               onChange={handleCheckboxChange}
-
-            /></div>
+            <div className={checkClass}> {checkboxComp}</div>
             <div className={nameClass}>{data.name}</div>
             <div className={deviceClass}>{data.device}</div>
             <div className={pathClass}>{data.path}</div>

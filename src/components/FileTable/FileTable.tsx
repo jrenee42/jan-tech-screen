@@ -5,6 +5,7 @@ import classnames from "classnames";
 import {useState, useEffect} from "react";
 import {Download} from 'react-bootstrap-icons';
 import MessageDialog from "@/components/MessageDialog/MessageDialog";
+import IndeterminateCheckbox from "@/components/Checkbox/IndeterminateCheckbox";
 
 
 type Props = {
@@ -15,6 +16,7 @@ function createFalseArray(n: number): boolean[] {
     return Array(n).fill(false);
 }
 
+const checkAvailability = (dd: FileInfo[]) => dd.every((d: FileInfo) => d.status === 'available');
 
 const FileTable: React.FC<Props> = ({data}) => {
 
@@ -22,6 +24,11 @@ const FileTable: React.FC<Props> = ({data}) => {
     const initSelectedArray = createFalseArray(data.length);
     const [selectedArray, setSelectedArray] = useState<boolean[]>(initSelectedArray);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [allAreAvailble, setAllAreAvailble] = useState<boolean>(checkAvailability(data));
+
+    // checkbox in the header:
+    const [checked, setChecked] = useState(false);
+    const [indeterminate, setIndeterminate] = useState(true);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -30,6 +37,7 @@ const FileTable: React.FC<Props> = ({data}) => {
     useEffect(() => {
         setActualData(data);
         setSelectedArray(createFalseArray(data.length));
+        setAllAreAvailble(checkAvailability(data));
     }, [data]);
 
     const getNumSelected = () => selectedArray.filter(x => x).length;
@@ -49,6 +57,42 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     };
 
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // if all are available; just toggle it (and propagate to the children!)
+        // if all not available:
+        // if indeterminate:  then uncheck everything that is checked (and propogate)
+
+        // if not checked; set to indeterminate and propagate to the available ones!
+        const justChecked = e.target.checked;
+        console.log("ack ack ack thth", justChecked);
+
+        // when propogating:  add/subtract from the selected array
+        // and set a property on the row to 'selected' (true/false) iff the status is available
+
+        // also:  make the checkboxes be disabled if status is not available, with a tooltip
+        // that says why it is unavailable
+        // also...use justChecked instead??? determine this TODO
+
+        if (allAreAvailble) {
+            if (checked) {
+                setChecked(false);
+                setIndeterminate(false);
+            } else {
+                setChecked(true);
+                setIndeterminate(false);
+            }
+        } else {
+            if (indeterminate) {
+                // uncheck everything
+                setChecked(false);
+                setIndeterminate(false);
+            } else {
+                setChecked(false);
+                setIndeterminate(true);
+            }
+        }
+    };
+
 
     const onSelect = (index: number, isSelected: boolean) => {
         // Create a shallow copy of the array
@@ -62,7 +106,6 @@ const FileTable: React.FC<Props> = ({data}) => {
     const nameClass = classnames(styles.cell, styles.columnName);
     const deviceClass = classnames(styles.cell, styles.columnDevice);
     const pathClass = classnames(styles.cell, styles.columnPath);
-    const statusClass = classnames(styles.cell, styles.columnStatus);
     const selectedLabelClass = classnames(styles.cell, styles.preHeaderCell);
     const downloadBtnClass = classnames(styles.cell, styles.preHeaderCell, styles.downloadButton);
     const checkboxClass = classnames(styles.cell, styles.preHeaderCell, styles.checkBoxControl);
@@ -77,7 +120,12 @@ const FileTable: React.FC<Props> = ({data}) => {
             <div className={styles.table}>
                 {/* pre-header */}
                 <div className={preHeaderRow}>
-                    <div className={checkboxClass}><input type={'checkbox'}/></div>
+                    <div className={checkboxClass}>
+                        <IndeterminateCheckbox
+                            checked={checked}
+                            indeterminate={indeterminate}
+                            onChange={handleCheckboxChange}/>
+                    </div>
                     <div className={selectedLabelClass} style={{width: '150px'}}>{selectedText}</div>
                     <div className={downloadBtnClass} onClick={openModal}>
                         <Download size={24} className={styles.icon}/>
