@@ -6,6 +6,7 @@ import {useState, useEffect} from "react";
 import {Download} from 'react-bootstrap-icons';
 import MessageDialog from "@/components/MessageDialog/MessageDialog";
 import IndeterminateCheckbox from "@/components/Checkbox/IndeterminateCheckbox";
+import {usePrevious} from "@/app/usePrevious";
 
 
 type Props = {
@@ -29,6 +30,8 @@ const FileTable: React.FC<Props> = ({data}) => {
     // checkbox in the header:
     const [checked, setChecked] = useState(false);
     const [indeterminate, setIndeterminate] = useState(false);
+    const [userClickedCheckbox, setUserClickedCheckbox] = useState<boolean>(false);
+    // const prevClickCount = usePrevious(userClickedCheckbox) || 0;
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -64,7 +67,8 @@ const FileTable: React.FC<Props> = ({data}) => {
 
         // if not checked; set to indeterminate and propagate to the available ones!
         const justChecked = e.target.checked;
-        // console.log("ack ack ack thth", justChecked);
+        console.log("ack ack ack thth", justChecked);
+        setUserClickedCheckbox(true);
 
         // when propogating:  add/subtract from the selected array
         // and set a property on the row to 'selected' (true/false) iff the status is available
@@ -110,6 +114,21 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     };
 
+    const adjustHeaderCheckbox = (newArray: boolean[]) => {
+        // if array all false; turn off checkbox
+        // if array all true, turn on
+        // else indeterminate
+        if (newArray.every((item: boolean) => !item)) {
+            setChecked(false);
+            setIndeterminate(false);
+        } else if (newArray.every((item: boolean) => item)) {
+            setChecked(true);
+            setIndeterminate(false);
+        } else {
+            setChecked(false);
+            setIndeterminate(true);
+        }
+    }
 
     const onSelect = (index: number, isSelected: boolean) => {
         // Create a shallow copy of the array
@@ -117,6 +136,8 @@ const FileTable: React.FC<Props> = ({data}) => {
         // Update the specific index
         newArray[index] = isSelected;
         setSelectedArray(newArray);
+        setUserClickedCheckbox(false);
+        adjustHeaderCheckbox(newArray);
     };
 
     const checkClass = classnames(styles.cell, styles.columnCheck);
@@ -134,6 +155,10 @@ const FileTable: React.FC<Props> = ({data}) => {
 
 
     const autoSelect = checked || indeterminate;
+    let extraRowProps = {};
+    if (userClickedCheckbox) {
+        extraRowProps = {autoSelect};
+    }
 
     return (
         <div>
@@ -163,7 +188,7 @@ const FileTable: React.FC<Props> = ({data}) => {
 
                 {/* Rows */}
                 {actualData.map((info, index) => (
-                    <Row key={info.device} data={info} onSelect={onSelect} index={index} autoSelect={autoSelect}/>
+                    <Row key={info.device} data={info} onSelect={onSelect} index={index} {...extraRowProps}/>
                 ))}
             </div>
             <div>

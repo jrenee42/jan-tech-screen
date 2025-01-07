@@ -29,7 +29,6 @@ const Row: React.FC<RowProps> = ({data, onSelect, index, autoSelect}) => {
     // (Ie, not undefined) adjust the checkbox and call onSelect.
     // don't call onSelect; that is meant to be called one by one so calling it multiple times doesn't  work (because of how state is updated)
     useEffect(() => {
-        console.log("in use effect; device/autoselect/disabled", data.device, autoSelect, checkBoxDisabled);
         if (!checkBoxDisabled && autoSelect !== undefined) {
             // autoSelect changed; update checkbox:
             setSelected(autoSelect);
