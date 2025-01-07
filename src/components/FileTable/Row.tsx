@@ -6,15 +6,19 @@ import classnames from "classnames";
 
 type RowProps = {
     data: FileInfo;
+    onSelect: (index: number, isSelected: boolean) => void;
+    index: number;
 };
 
-const Row: React.FC<RowProps> = ({data}) => {
+const Row: React.FC<RowProps> = ({data, onSelect, index}) => {
 
     const [isSelected, setSelected] = useState<boolean>(false);
 
     // Handler to toggle the checkbox
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelected(event.target.checked);
+        const isChecked = event.target.checked;
+        setSelected(isChecked);
+        onSelect(index, isChecked);
     };
 
     const checkClass = classnames(styles.cell, styles.columnCheck);

@@ -6,17 +6,36 @@ import {useState, useEffect} from "react";
 
 type Props = {
     data: FileInfo[];
+    onSelect: (index: number, isSelected: boolean) => void;
 };
+
+function createFalseArray(n: number): boolean[] {
+    return Array(n).fill(false);
+}
+
 
 const FileTable: React.FC<Props> = ({data}) => {
 
     const [actualData, setActualData] = useState<FileInfo[]>(data);
+    const initSelectedArray = createFalseArray(data.length);
+    const [selectedArray, setSelectedArray] = useState<boolean[]>(initSelectedArray);
 
 
     // redisplay data when it changes:
     useEffect(() => {
         setActualData(data);
+        setSelectedArray(createFalseArray(actualData.length));
     }, [data]);
+
+    const getNumSelected = () => selectedArray.filter(x => x).length;
+
+    const onSelect = (index: number, isSelected: boolean) => {
+        // Create a shallow copy of the array
+        const newArray = [...selectedArray];
+        // Update the specific index
+        newArray[index] = isSelected;
+        setSelectedArray(newArray);
+    };
 
     const checkClass = classnames(styles.cell, styles.columnCheck);
     const nameClass = classnames(styles.cell, styles.columnName);
@@ -27,12 +46,14 @@ const FileTable: React.FC<Props> = ({data}) => {
 
     const preHeaderRow = classnames(styles.headerRow, styles.preHeaderRow);
 
+    const selectedText = getNumSelected() === 0 ? "None Selected" : `Selected ${getNumSelected()}`;
+
     return (
         <div className={styles.table}>
             {/* pre-header */}
             <div className={preHeaderRow}>
                 <div className={preHeaderClass}><input type={'checkbox'}/></div>
-                <div className={preHeaderClass}>Selected #</div>
+                <div className={preHeaderClass}>{selectedText}</div>
                 <div className={preHeaderClass}> Download Selected</div>
             </div>
             {/* Header */}
@@ -45,8 +66,8 @@ const FileTable: React.FC<Props> = ({data}) => {
             </div>
 
             {/* Rows */}
-            {actualData.map((info) => (
-                <Row key={info.device} data={info}/>
+            {actualData.map((info, index) => (
+                <Row key={info.device} data={info} onSelect={onSelect} index={index}/>
             ))}
         </div>
     );

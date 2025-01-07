@@ -28,6 +28,7 @@ const parseJsonData = (text: string) => {
     return JSON.parse(validateJson);
 }
 
+
 const initData = parseJsonData(initText);
 
 const Main: React.FC = () => {
@@ -38,7 +39,8 @@ const Main: React.FC = () => {
         const contents = e.target.value;
 
         setDataText(contents);
-        setFileInfo(parseJsonData(contents));
+        const actualData = parseJsonData(contents);
+        setFileInfo(actualData);
     };
 
     return <div>
